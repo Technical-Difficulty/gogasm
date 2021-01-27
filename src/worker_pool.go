@@ -1,4 +1,4 @@
-package main
+package gogasm
 
 type WorkerGenerator func() Worker
 
