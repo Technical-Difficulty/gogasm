@@ -20,10 +20,10 @@ type clientConn struct {
 	conn net.Conn
 }
 
-func NewConnPool(size int) connPool {
+func NewConnPool(size int, address string) connPool {
 	cp := connPool{
 		size:   size,
-		addr:   "localhost:3000",
+		addr:   address,
 		conns:  []*clientConn{},
 		dialer: net.Dialer{Timeout: 10 * time.Second},
 	}
