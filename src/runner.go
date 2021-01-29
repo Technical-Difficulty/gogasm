@@ -1,4 +1,4 @@
-package main
+package gogasm
 
 import (
 	"fmt"
@@ -8,6 +8,9 @@ import (
 	"sync"
 	"time"
 )
+
+var HeadSlice = []byte("HEAD /")
+var HeadSliceLength = len(HeadSlice)
 
 type Runner struct {
 	network        string
@@ -39,6 +42,7 @@ func NewRunner(network string, address string, wordlistPath string) Runner {
 			return conn
 		}),
 	}
+
 	runner.slicePool = NewWorkerPool(50, func() Worker {
 		worker := Worker{
 			tmp:            make([]byte, 12),
@@ -84,9 +88,9 @@ func (r Runner) PreallocateRequestByteSlices() [][]byte {
 	var slices [][]byte
 
 	for i := 0; i <= 28; i++ {
-		slice := make([]byte, headSliceLength+r.requestSlice.length+i) // Create slice of length i + other slice lengths above
-		copy(slice[0:headSliceLength], headSlice)                      // Copy in the headSlice at the start of our generated slice
-		copy(slice[headSliceLength+i:], r.requestSlice.bytes)          // Copy the httpSlice at the end of our generated slice
+		slice := make([]byte, HeadSliceLength+r.requestSlice.length+i) // Create slice of length i + other slice lengths above
+		copy(slice[0:HeadSliceLength], HeadSlice)                      // Copy in the headSlice at the start of our generated slice
+		copy(slice[HeadSliceLength+i:], r.requestSlice.bytes)          // Copy the httpSlice at the end of our generated slice
 
 		slices = append(slices, slice)
 	}

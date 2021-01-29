@@ -1,9 +1,8 @@
 package main
 
-var headSlice = []byte("HEAD /")
-var headSliceLength = len(headSlice)
+import gg "gogasm/src"
 
 func main() {
-	runner := NewRunner("tcp", "127.0.0.1:80", "server/big.txt")
+	runner := gg.NewRunner("tcp", "127.0.0.1:80", "server/big.txt")
 	runner.Start()
 }
