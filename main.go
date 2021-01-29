@@ -4,6 +4,6 @@ var headSlice = []byte("HEAD /")
 var headSliceLength = len(headSlice)
 
 func main() {
-	runner := NewRunner("tcp", "127.0.0.1:80", "big.txt")
+	runner := NewRunner("tcp", "127.0.0.1:80", "server/big.txt")
 	runner.Start()
 }
