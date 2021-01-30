@@ -35,7 +35,7 @@ func NewRunner(network string, address string, wordlistPath string) Runner {
 		address:      address,
 		wordlistPath: wordlistPath,
 		requestSlice: RunnerHTTPSlice{bytes: requestSlice, length: len(requestSlice)},
-		connectionPool: NewConnectionPool(300, func() *net.TCPConn {
+		connectionPool: NewConnectionPool(300, func() interface{} {
 			conn, _ := net.DialTCP(network, nil, requestAddress)
 			conn.SetLinger(0)
 
@@ -43,7 +43,7 @@ func NewRunner(network string, address string, wordlistPath string) Runner {
 		}),
 	}
 
-	runner.slicePool = NewWorkerPool(50, func() Worker {
+	runner.slicePool = NewWorkerPool(50, func() interface{} {
 		worker := Worker{
 			tmp:            make([]byte, 12),
 			requestSlices:  runner.PreallocateRequestByteSlices(),
@@ -78,7 +78,7 @@ func (r Runner) Start() {
 
 func (r Runner) DoRequest(path string, wg *sync.WaitGroup) {
 	wg.Add(1)
-	worker := r.slicePool.Get()
+	worker := r.slicePool.Get().(Worker)
 	worker.SocketRequest(path)
 	wg.Done()
 	r.slicePool.Put(worker)
