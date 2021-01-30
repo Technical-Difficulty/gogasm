@@ -9,12 +9,9 @@ import (
 	"time"
 )
 
-var count int = 0
-
 func hello(w http.ResponseWriter, req *http.Request) {
-	count++
 	time.Sleep(2 * time.Second)
-	fmt.Println(fmt.Sprintf("ID %d: %s", count, req.URL.Path))
+	fmt.Println(fmt.Sprintf("/%s", req.URL.Path))
 	fmt.Fprintf(w, "you found me mother fucker\n")
 }
 
