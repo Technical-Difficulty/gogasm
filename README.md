@@ -21,7 +21,7 @@ cd gogasm && go build
 ```
 Run it!
 ```
-./gogasm
+./gogasm -w /path/to/wordlist -a localhost -p 80
 ```
 # Testing
 run the test server
