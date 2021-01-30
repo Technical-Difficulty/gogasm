@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -63,7 +64,9 @@ func (r Runner) Start() {
 
 	startTime := time.Now().UnixNano()
 	for i := range lines {
-		go r.DoRequest(lines[i], &wg)
+		if line := lines[i]; line != "" {
+			go r.DoRequest(line, &wg)
+		}
 	}
 
 	wg.Wait()
@@ -72,8 +75,8 @@ func (r Runner) Start() {
 	difference := endTime - startTime
 	differenceSeconds := float64(difference) / 1000000000.0
 
-	fmt.Println(fmt.Sprintf("Took %f seconds to process %d line wordlist.\n", differenceSeconds, len(lines)))
-	fmt.Println(fmt.Sprintf("Average of %f requests per second", float64(len(lines))/differenceSeconds))
+	fmt.Println(fmt.Sprintf("%s\nTook %f seconds to process %d line wordlist.", TERMINAL_CLEAR_LINE, differenceSeconds, len(lines)))
+	fmt.Println(fmt.Sprintf("Average of %f requests per second\n", float64(len(lines))/differenceSeconds))
 }
 
 func (r Runner) DoRequest(path string, wg *sync.WaitGroup) {
@@ -82,6 +85,9 @@ func (r Runner) DoRequest(path string, wg *sync.WaitGroup) {
 	worker.SocketRequest(path)
 	wg.Done()
 	r.slicePool.Put(worker)
+	go func() {
+		fmt.Fprintf(os.Stderr, "%s Processing :: /%s", TERMINAL_CLEAR_LINE, path)
+	}()
 }
 
 func (r Runner) PreallocateRequestByteSlices() [][]byte {

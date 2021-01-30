@@ -30,6 +30,6 @@ func (w *Worker) SocketRequest(path string) {
 
 func (w *Worker) ReadStatusCode(path string) {
 	if w.tmp[9] != 52 || (w.tmp[11] != 52 && w.tmp[11] != 48) { // 52 = 4 in decimal, we are checking for 404.
-		fmt.Println(fmt.Sprintf("[%s] %s", string(w.tmp[9:12]), path))
+		fmt.Println(fmt.Sprintf("%s [%s] /%s", TERMINAL_CLEAR_LINE, string(w.tmp[9:12]), path))
 	}
 }
