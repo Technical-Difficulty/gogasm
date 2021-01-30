@@ -10,7 +10,7 @@ help:
 
 # never ever go over 1000 lines!
 lines:
-	@find . -name '*.go' | xargs wc -l | sort -nr
+	@find . -name '*.go' ! -path './server/*' ! -name '*_test.go' | xargs wc -l | sort -nr
 
 server.run:
 	@go run server/server.go

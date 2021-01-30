@@ -1,0 +1,53 @@
+package main
+
+import (
+	"fmt"
+	"net"
+)
+
+
+
+type Pool struct {
+	queue     chan interface{}
+	generator func() interface{}
+}
+
+type clientConn struct {
+	c net.Conn
+}
+
+func (p *Pool) PreGenerate() {
+	for cap(p.queue) > 0 {
+		select {
+		case p.queue <- p.generator():
+			continue
+		default:
+			return
+		}
+	}
+}
+
+func (p *Pool) Get() interface{} {
+	return <-p.queue
+}
+
+func (p *Pool) Put(worker interface{}) {
+	p.queue <- worker
+}
+
+type testi struct {
+	n int
+}
+
+func main() {
+	p := Pool { generator: func() interface{} {
+		conn, _ := net.Dial("tcp", "localhost:3000")
+		return &clientConn{ c: conn }
+	} }
+
+	p.PreGenerate()
+
+	conn := p.Get()
+
+	fmt.Println(conn)
+}
