@@ -12,7 +12,7 @@ func NewConnectionPool(size int, generator Generator) *ConnectionPool {
 	}
 
 	result := &ConnectionPool{
-		Pool {
+		Pool{
 			queue:     make(chan interface{}, size),
 			generator: generator,
 		},

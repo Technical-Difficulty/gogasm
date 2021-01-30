@@ -9,7 +9,7 @@ func NewWorkerPool(size int, generator Generator) *WorkerPool {
 		panic("Need generator function")
 	}
 	result := &WorkerPool{
-		Pool {
+		Pool{
 			queue:     make(chan interface{}, size),
 			generator: generator,
 		},

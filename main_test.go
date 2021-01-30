@@ -1,11 +1,11 @@
 package main
 
 import (
-	"testing"
+	gg "gogasm/src"
 	"io/ioutil"
 	"strings"
 	"sync"
-	gg "gogasm/src"
+	"testing"
 )
 
 func BenchmarkRunner(b *testing.B) {
