@@ -7,6 +7,8 @@
                                                                     
 ```
 
+![gogasm-demo](https://i.imgur.com/mjnn11K.gif)
+
 # gogasm
 Directory scanner written in GO and orgasmicly fast
 
