@@ -37,5 +37,5 @@ func main() {
 
 	http.HandleFunc("/", http.NotFound)
 
-	http.ListenAndServe(":3000", nil)
+	http.ListenAndServe(":80", nil)
 }
