@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
-	"os"
+	//"os"
 	"strings"
 	"sync"
 	"time"
@@ -85,9 +85,11 @@ func (r Runner) DoRequest(path string, wg *sync.WaitGroup) {
 	worker.SocketRequest(path)
 	wg.Done()
 	r.slicePool.Put(worker)
-	go func() {
-		fmt.Fprintf(os.Stderr, "%s Processing :: /%s", TERMINAL_CLEAR_LINE, path)
-	}()
+  // TODO: better way to output progress. As Matt rightfully pointed out writing to stdout is slow
+  // as fook. Maybe we should set up a results channel and just write every 100 request or something
+  // go func() {
+	// 	fmt.Fprintf(os.Stderr, "%s Processing :: /%s", TERMINAL_CLEAR_LINE, path)
+	// }()
 }
 
 func (r Runner) PreallocateRequestByteSlices() [][]byte {
